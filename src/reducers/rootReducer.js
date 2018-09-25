@@ -3,8 +3,8 @@
 */
 
 import { combineReducers } from 'redux'
-import simpleReducer from './simpleReducer'
+import { githubUsers } from './simpleReducer'
 
 export default combineReducers({
-  simpleReducer
+  githubUsers
 })

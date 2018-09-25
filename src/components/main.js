@@ -5,9 +5,7 @@
 import React, { Component } from 'react';
 //connect React component to Store using 'connect' React binding from 'react-redux'.
 import { connect } from 'react-redux'; 
-import { simpleAction, itemsFetchData } from './actions/action-initiators'
-import logo from './logo.svg';
-import './App.css';
+import { itemsFetchData } from '../actions/action-initiators'
 
 /*
 Map Redux State to Component Props
@@ -34,21 +32,14 @@ const mapDispatchToProps = dispatch => ({
   fetchData: (url) => dispatch(itemsFetchData(url))
  })
 
-class App extends Component {
+class Main extends Component {
   simpleAction = (event) => {
-    this.props.fetchData('https://api.github.com/search/repositories?q=stars:>1+language:javascript&sort=stars&order=desc&type=Repositories');
+    this.props.fetchData();
   }
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
         <button onClick={this.simpleAction}>Test redux action</button>
         <pre>
           {
@@ -62,4 +53,4 @@ class App extends Component {
 
 //connect takes in two parameters: mapStateToProps and mapDispatchToProps.
 
-export default connect(mapStateToProps, mapDispatchToProps) (App);
+export default connect(mapStateToProps, mapDispatchToProps) (Main);
