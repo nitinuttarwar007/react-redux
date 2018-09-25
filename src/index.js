@@ -8,6 +8,7 @@ import configureStore from './store'
 import Main from './components/main';
 import registerServiceWorker from './registerServiceWorker'
 
+import '../node_modules/antd/dist/antd.css';
 import './index.css'
 
 ReactDOM.render(
