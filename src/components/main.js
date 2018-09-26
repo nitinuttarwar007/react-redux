@@ -6,8 +6,10 @@ import React, { Component } from 'react';
 //connect React component to Store using 'connect' React binding from 'react-redux'.
 import { connect } from 'react-redux'; 
 import { GithubUsersData } from '../actions/githubAction'
-import { Spin, List, Avatar, Icon, Button } from 'antd';
-
+import { Spin, List, Avatar, Button, Layout, Input } from 'antd';
+import './main.css'
+const { Header, Content, Footer } = Layout
+const Search = Input.Search
 /*
 Map Redux State to Component Props
 
@@ -44,44 +46,62 @@ class Main extends Component {
   }
 
   render() {
-    if (this.props.isLoading) {
-      return <Spin />;
-    }
-    
     return (
-      <div>
-        <div style={{ margin:'50px' }}>
-          <Button onClick={this.getUsers}>Cleck Here to get top JS library</Button>
-          <br /><br />  
-          <List
-            itemLayout="vertical"
-            bordered="true"
-            size="large"
-            pagination={{
-              onChange: (page) => {
-                console.log(page);
-              },
-              pageSize: 3,
-            }}
-            header={<div style={{ textAlign:'center', fontSize:'24px'}}>Github Users</div>}
-            dataSource={this.props.users}
-            footer={<div style={{ textAlign:'left', verticalAlign:'center', fontSize:'24px'}}><b>ant design</b> footer</div>}
-            renderItem={item => (
-              <List.Item 
-                key={item.node_id}
-                extra={<img width={272} alt="logo" src={item.owner.avatar_url} />}
-              >
-                <List.Item.Meta
-                  avatar={<Avatar src={item.owner.avatar_url} />}
-                  title={<a href={item.owner.html_url}>{item.name}</a>}
-                  description={item.description}
+      <Layout className="layout">
+        <Header>
+          <div> 
+            <Search
+              placeholder="input search text"
+              onSearch={value => console.log(value)}
+              enterButton
+            />
+          </div>
+        </Header>
+        <Content style={{ padding: '0 50px' }}>
+          <div style={{ background: '#fff', margin: '16px 0', padding: 24, minHeight: 280 }}>
+            <Button onClick={this.getUsers}>Cleck Here to get top JS library</Button>
+            <br /><br />  
+            {this.props.isLoading ? (
+              <div className='spinStyle'>
+                <Spin 
+                  size="large"
+                  tip="Loading..."
                 />
-                {item.stargazers_count}
-              </List.Item>
-            )}
-          />
-        </div>
-      </div>
+              </div>) : 
+              <List
+                itemLayout="vertical"
+                bordered="true"
+                size="large"
+                pagination={{
+                  onChange: (page) => {
+                    console.log(page);
+                  },
+                  pageSize: 3,
+                }}
+                header={<div style={{ textAlign:'center', fontSize:'24px'}}>Github Users</div>}
+                dataSource={this.props.users}
+                // footer={<div style={{ textAlign:'left', verticalAlign:'center', fontSize:'14px'}}><b>Ceated with Ant design</b></div>}
+                renderItem={item => (
+                  <List.Item 
+                    key={item.node_id}
+                    extra={<img width={150} height={150} alt="logo" src={item.owner.avatar_url} />}
+                  >
+                    <List.Item.Meta
+                      avatar={<Avatar src={item.owner.avatar_url} />}
+                      title={<a href={item.owner.html_url}>{item.name}</a>}
+                      description={item.description}
+                    />
+                    {item.stargazers_count}
+                  </List.Item>
+                )}
+              />
+            }
+          </div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>
+          Ant Design ©2018 Created by Ant UED
+        </Footer>
+      </Layout>
     );
   }
 }
