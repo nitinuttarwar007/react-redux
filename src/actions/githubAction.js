@@ -19,9 +19,10 @@ export function fetchGithubUsers(items) {
   };
 }
 
-export function GithubUsersData() {
-  let url = 'https://api.github.com/search/repositories?q=stars:>1+language:javascript&sort=stars&order=desc&type=Repositories'
-  
+export function GithubUsersData(value) {
+
+  let url = 'https://api.github.com/search/users?q='+ value
+
   return (dispatch) => {
       dispatch(usersAreLoading(true));
 

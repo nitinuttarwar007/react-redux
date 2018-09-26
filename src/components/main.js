@@ -18,7 +18,7 @@ component to subscribe to redux state updates.
 */
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  //console.log(state);
   return {
       users: state.githubUsers,
       isLoading: state.usersAreLoading
@@ -36,13 +36,13 @@ The mapDispatchToProps parameter of connect can either be:
 */
 
 const mapDispatchToProps = dispatch => ({
-  fetchData: () => dispatch(GithubUsersData())
+  fetchData: (value) => dispatch(GithubUsersData(value))
  })
 
 class Main extends Component {
-  
-  getUsers = (event) => {
-    this.props.fetchData();
+
+  getUsersInfo = (value) => {
+    this.props.fetchData(value);
   }
 
   render() {
@@ -52,15 +52,13 @@ class Main extends Component {
           <div> 
             <Search
               placeholder="input search text"
-              onSearch={value => console.log(value)}
+              onSearch={(value) => this.getUsersInfo(value)}
               enterButton
             />
           </div>
         </Header>
         <Content style={{ padding: '0 50px' }}>
           <div style={{ background: '#fff', margin: '16px 0', padding: 24, minHeight: 280 }}>
-            <Button onClick={this.getUsers}>Cleck Here to get top JS library</Button>
-            <br /><br />  
             {this.props.isLoading ? (
               <div className='spinStyle'>
                 <Spin 
@@ -74,27 +72,26 @@ class Main extends Component {
                 size="large"
                 pagination={{
                   onChange: (page) => {
-                    console.log(page);
+                    //console.log(page);
                   },
                   pageSize: 3,
                 }}
                 header={<div style={{ textAlign:'center', fontSize:'24px'}}>Github Users</div>}
                 dataSource={this.props.users}
-                // footer={<div style={{ textAlign:'left', verticalAlign:'center', fontSize:'14px'}}><b>Ceated with Ant design</b></div>}
                 renderItem={item => (
                   <List.Item 
                     key={item.node_id}
-                    extra={<img width={150} height={150} alt="logo" src={item.owner.avatar_url} />}
+                    extra={<img width={150} height={150} alt="logo" src={item.avatar_url} />}
                   >
                     <List.Item.Meta
-                      avatar={<Avatar src={item.owner.avatar_url} />}
-                      title={<a href={item.owner.html_url}>{item.name}</a>}
-                      description={item.description}
+                      avatar={<Avatar src={item.avatar_url} />}
+                      title={<a href={item.html_url}>{item.login}</a>}
+                      description={"Profile Url:- "+ item.html_url}
                     />
                     {item.stargazers_count}
                   </List.Item>
                 )}
-              />
+            />
             }
           </div>
         </Content>
