@@ -34,6 +34,6 @@ export function GithubUsersData(value) {
               dispatch(usersAreLoading(false));
               return response;
           })
-          .then((response) => dispatch(fetchGithubUsers(response.data.items)))
+          .then((response) => dispatch(fetchGithubUsers(response.data)))
   };
 }

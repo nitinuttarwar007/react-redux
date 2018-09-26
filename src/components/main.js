@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 //connect React component to Store using 'connect' React binding from 'react-redux'.
 import { connect } from 'react-redux'; 
 import { GithubUsersData } from '../actions/githubAction'
-import { Spin, List, Avatar, Button, Layout, Input } from 'antd';
+import { Spin, List, Avatar, Layout, Input } from 'antd';
 import './main.css'
 const { Header, Content, Footer } = Layout
 const Search = Input.Search
@@ -18,9 +18,9 @@ component to subscribe to redux state updates.
 */
 
 const mapStateToProps = (state) => {
-  //console.log(state);
   return {
-      users: state.githubUsers,
+      total_count: state.githubUsers.total_count,
+      users: state.githubUsers.items,
       isLoading: state.usersAreLoading
   }
 }
@@ -66,32 +66,36 @@ class Main extends Component {
                   tip="Loading..."
                 />
               </div>) : 
-              <List
-                itemLayout="vertical"
-                bordered="true"
-                size="large"
-                pagination={{
-                  onChange: (page) => {
-                    //console.log(page);
-                  },
-                  pageSize: 3,
-                }}
-                header={<div style={{ textAlign:'center', fontSize:'24px'}}>Github Users</div>}
-                dataSource={this.props.users}
-                renderItem={item => (
-                  <List.Item 
-                    key={item.node_id}
-                    extra={<img width={150} height={150} alt="logo" src={item.avatar_url} />}
-                  >
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.avatar_url} />}
-                      title={<a href={item.html_url}>{item.login}</a>}
-                      description={"Profile Url:- "+ item.html_url}
-                    />
-                    {item.stargazers_count}
-                  </List.Item>
-                )}
-            />
+              (<div>
+                <p> Total Users : {this.props.total_count} </p>
+                <br /><br />
+                <List
+                  itemLayout="vertical"
+                  bordered="true"
+                  size="large"
+                  pagination={{
+                    onChange: (page) => {
+                      //console.log(page);
+                    },
+                    pageSize: 3,
+                  }}
+                  header={<div style={{ textAlign:'center', fontSize:'24px'}}>Github Users</div>}
+                  dataSource={this.props.users}
+                  renderItem={item => (
+                    <List.Item 
+                      key={item.node_id}
+                      extra={<img width={150} height={150} alt="logo" src={item.avatar_url} />}
+                    >
+                      <List.Item.Meta
+                        avatar={<Avatar src={item.avatar_url} />}
+                        title={<a href={item.html_url}>{item.login}</a>}
+                        description={"Profile Url:- "+ item.html_url}
+                      />
+                      {item.stargazers_count}
+                    </List.Item>  
+                  )}
+                />
+              </div>)
             }
           </div>
         </Content>
