@@ -36,13 +36,32 @@ The mapDispatchToProps parameter of connect can either be:
 */
 
 const mapDispatchToProps = dispatch => ({
-  fetchData: (value) => dispatch(GithubUsersData(value))
+  fetchData: (value, pageNo) => dispatch(GithubUsersData(value, pageNo))
  })
 
 class Main extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchKey: null,
+      pageNo: 1,
+    };
+  }
+
   getUsersInfo = (value) => {
-    this.props.fetchData(value);
+    this.setState({
+      searchKey: value,
+      pageNo: 1
+    });
+    this.props.fetchData(value, this.state.pageNo);
+  }
+
+  handleSelectedPage = (page) => {
+    this.setState({
+      pageNo: page
+    })
+    this.props.fetchData(this.state.searchKey, page);
   }
 
   render() {
@@ -75,10 +94,14 @@ class Main extends Component {
                   size="large"
                   pagination={{
                     onChange: (page) => {
-                      //console.log(page);
+                      this.handleSelectedPage(page)
                     },
-                    pageSize: 3,
-                  }}
+                    pageSize: 30,
+                    defaultCurrent: 1,
+                    current: this.state.pageNo,
+                    total: this.props.total_count ,
+                  }
+                  }
                   header={<div style={{ textAlign:'center', fontSize:'24px'}}>Github Users</div>}
                   dataSource={this.props.users}
                   renderItem={item => (

@@ -19,9 +19,9 @@ export function fetchGithubUsers(items) {
   };
 }
 
-export function GithubUsersData(value) {
+export function GithubUsersData(value, pageNo) {
 
-  let url = 'https://api.github.com/search/users?q='+ value
+  let url = 'https://api.github.com/search/users?q='+ value+'&per_page=30'+'&page='+pageNo
 
   return (dispatch) => {
       dispatch(usersAreLoading(true));
