@@ -5,9 +5,10 @@
 import React, { Component } from 'react';
 //connect React component to Store using 'connect' React binding from 'react-redux'.
 import { connect } from 'react-redux'; 
-import { GithubUsersData } from '../actions/githubAction'
-import { Spin, List, Avatar, Layout, Input } from 'antd';
+import { GithubUsersData, githubUsersRepos } from '../actions/githubAction'
+import { List, Avatar,Skeleton, Layout, Input } from 'antd';
 import './main.css'
+import { Button } from 'antd/lib/radio';
 const { Header, Content, Footer } = Layout
 const Search = Input.Search
 /*
@@ -21,6 +22,7 @@ const mapStateToProps = (state) => {
   return {
       total_count: state.githubUsers.total_count,
       users: state.githubUsers.items,
+      repos: state.githubUsersRepos,
       isLoading: state.usersAreLoading
   }
 }
@@ -36,7 +38,8 @@ The mapDispatchToProps parameter of connect can either be:
 */
 
 const mapDispatchToProps = dispatch => ({
-  fetchData: (value, pageNo) => dispatch(GithubUsersData(value, pageNo))
+  fetchData: (value, pageNo) => dispatch(GithubUsersData(value, pageNo)),
+  fetchRepos: (repos) => dispatch(githubUsersRepos(repos))
  })
 
 class Main extends Component {
@@ -64,6 +67,10 @@ class Main extends Component {
     this.props.fetchData(this.state.searchKey, page);
   }
 
+  loadRepos = (repos_url) => {
+    this.props.fetchRepos(repos_url);
+  }
+
   render() {
     return (
       <Layout className="layout">
@@ -78,18 +85,10 @@ class Main extends Component {
         </Header>
         <Content style={{ padding: '0 50px' }}>
           <div style={{ background: '#fff', margin: '16px 0', padding: 24, minHeight: 280 }}>
-            {this.props.isLoading ? (
-              <div className='spinStyle'>
-                <Spin 
-                  size="large"
-                  tip="Loading..."
-                />
-              </div>) : 
-              (<div>
                 <p> Total Users : {this.props.total_count} </p>
                 <br /><br />
                 <List
-                  itemLayout="vertical"
+                  itemLayout="horizontal"
                   bordered="true"
                   size="large"
                   pagination={{
@@ -105,22 +104,26 @@ class Main extends Component {
                   header={<div style={{ textAlign:'center', fontSize:'24px'}}>Github Users</div>}
                   dataSource={this.props.users}
                   renderItem={item => (
-                    <List.Item 
+                    <List.Item
+                      loading={this.props.isLoading}
                       key={item.node_id}
-                      extra={<img width={150} height={150} alt="logo" src={item.avatar_url} />}
+                      actions={[
+                        <Button onClick={() => this.loadRepos(item.repos_url)}>
+                          More Details
+                        </Button>
+                      ]}
                     >
-                      <List.Item.Meta
-                        avatar={<Avatar src={item.avatar_url} />}
-                        title={<a href={item.html_url}>{item.login}</a>}
-                        description={"Profile Url:- "+ item.html_url}
-                      />
-                      {item.stargazers_count}
-                    </List.Item>  
+                      <Skeleton avatar title={true} loading={this.props.isLoading} active>
+                        <List.Item.Meta
+                          avatar={<Avatar size={64} shape="circle" src={item.avatar_url} />}
+                          title={<a style={{fontSize: 24}} href={item.html_url}>{item.login}</a>}
+                          description={"Profile Url:- "+ item.html_url + "Github Score: " + item.score}
+                        />
+                      </Skeleton>  
+                    </List.Item>
                   )}
                 />
-              </div>)
-            }
-          </div>
+              </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
           Ant Design ©2018 Created by Ant UED

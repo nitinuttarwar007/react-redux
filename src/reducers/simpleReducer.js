@@ -18,3 +18,13 @@ export function githubUsers(state = {}, action) {
       return state
   }
 }
+
+export function githubUserRepos(state = {}, action) {
+  switch (action.type) {
+    case 'FETCH_REPOS':
+      return action.payload
+
+    default:
+      return state
+  }
+}
