@@ -3,10 +3,10 @@
 */
 
 import { combineReducers } from 'redux'
-import { githubUsers, githubUserRepos, usersAreLoading } from './simpleReducer'
+import { githubUsers, UserRepos, usersAreLoading } from './simpleReducer'
 
 export default combineReducers({
   githubUsers,
-  githubUserRepos,
+  UserRepos,
   usersAreLoading
 })

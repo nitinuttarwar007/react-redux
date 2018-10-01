@@ -19,7 +19,7 @@ export function githubUsers(state = {}, action) {
   }
 }
 
-export function githubUserRepos(state = {}, action) {
+export function UserRepos(state = {}, action) {
   switch (action.type) {
     case 'FETCH_REPOS':
       return action.payload

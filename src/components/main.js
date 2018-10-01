@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 //connect React component to Store using 'connect' React binding from 'react-redux'.
 import { connect } from 'react-redux'; 
 import { GithubUsersData, githubUsersRepos } from '../actions/githubAction'
-import { List, Avatar,Skeleton, Layout, Input } from 'antd';
+import { List, Avatar,Skeleton, Layout, Input } from 'antd'
 import './main.css'
 import { Button } from 'antd/lib/radio';
 const { Header, Content, Footer } = Layout
@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
   return {
       total_count: state.githubUsers.total_count,
       users: state.githubUsers.items,
-      repos: state.githubUsersRepos,
+      repos: state.UserRepos,
       isLoading: state.usersAreLoading
   }
 }
@@ -85,8 +85,13 @@ class Main extends Component {
         </Header>
         <Content style={{ padding: '0 50px' }}>
           <div style={{ background: '#fff', margin: '16px 0', padding: 24, minHeight: 280 }}>
-                <p> Total Users : {this.props.total_count} </p>
-                <br /><br />
+            {this.props.isLoading ? ( null ) : ( 
+                  <div>
+                    <p> Total Users : {this.props.total_count} </p>
+                    <br /><br />
+                  </div>
+                )
+                }
                 <List
                   itemLayout="horizontal"
                   bordered="true"
@@ -117,7 +122,7 @@ class Main extends Component {
                         <List.Item.Meta
                           avatar={<Avatar size={64} shape="circle" src={item.avatar_url} />}
                           title={<a style={{fontSize: 24}} href={item.html_url}>{item.login}</a>}
-                          description={"Profile Url:- "+ item.html_url + "Github Score: " + item.score}
+                          description={"Profile Url:- "+ item.html_url + "  Github Score: " + item.score}
                         />
                       </Skeleton>  
                     </List.Item>
