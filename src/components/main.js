@@ -77,6 +77,7 @@ class Main extends Component {
         <Header>
           <div> 
             <Search
+              className="gitSearch"
               placeholder="input search text"
               onSearch={(value) => this.getUsersInfo(value)}
               enterButton
@@ -131,7 +132,7 @@ class Main extends Component {
               </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©2018 Created by Ant UED
+          Ant Design ©2019 Created by Ant UED
         </Footer>
       </Layout>
     );

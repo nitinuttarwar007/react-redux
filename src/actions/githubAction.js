@@ -28,7 +28,7 @@ export function fetchUsersRepos(repos) {
 
 export function GithubUsersData(value, pageNo) {
 
-  let url = 'https://api.github.com/search/users?q='+ value+'&per_page=30'+'&page='+pageNo
+  let url = 'https://api.github.com/search/users?q='+ value+'&per_page=30'+'&page='+ pageNo
 
   return (dispatch) => {
       dispatch(usersAreLoading(true));
